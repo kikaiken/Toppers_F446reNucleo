@@ -1,0 +1,19 @@
+PACKAGE asp_arch_arm_m_armclang
+
+Makefile.target
+MANIFEST
+stm32f401re.scat
+target.tf
+target_asm.inc
+target_check.tf
+target_user.txt
+
+uvision/asp.uvoptx
+uvision/asp.uvprojx
+uvision/asp_proj.uvmpw
+uvision/asp-cfg_pass3.bat
+uvision/cfg1_out.uvprojx
+uvision/cfg1_out-cfg_pass1.bat
+uvision/cfg1_out-cfg_pass23.bat
+uvision/libkernel.uvprojx
+

@@ -1,0 +1,122 @@
+#
+#  @(#) $Id: Makefile.core 2838 2018-04-19 02:11:06Z ertl-honda $
+# 
+
+#
+#		Makefile のコア依存部（ARM-M_ARMCC用）
+#
+
+# 
+#  コア依存部ディレクトリ名の定義 
+# 
+COREDIR = $(SRCDIR)/arch/$(PRC)_$(TOOL)/common
+COREDIR_GCC = $(SRCDIR)/arch/$(PRC)_gcc/common
+
+#
+#  ツール依存部ディレクトリ名の定義 
+#
+TOOLDIR = $(SRCDIR)/arch/$(TOOL)
+
+#
+#  コンパイルオプション
+#
+COPTS := $(COPTS) --target=arm-arm-none-eabi
+
+#DATA領域の初期値を圧縮しない
+LDFLAGS := $(LDFLAGS) --apcs=/interwork --diag_style=gnu --datacompressor=off --no_remove 
+
+#
+INCLUDES := $(INCLUDES) -I$(COREDIR) -I$(COREDIR_GCC) -I$(TOOLDIR)
+
+#
+LIBS := $(LIBS)
+
+#
+CDEFS := $(CDEFS)
+
+#シンボル出力,未使用シンボルを削除しない    
+CFG1_OUT_LDFLAGS := $(CFG1_OUT_LDFLAGS) --symdefs=cfg1_out.syms --no_remove 
+
+# -Wall を付加しない
+OMIT_WARNING_ALL = false
+
+#
+#  カーネルに関する定義
+#
+KERNEL_DIR := $(KERNEL_DIR) $(COREDIR) $(COREDIR_GCC)
+KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) core_weak.o
+KERNEL_COBJS := $(KERNEL_COBJS) core_config.o
+
+#
+#  コアのタイプによる違い
+#
+ifeq ($(CORE_TYPE),CORTEX_M4)
+	ARM_ARCH = ARMV7M
+	CPU_NAME = cortex-m4
+	ifeq ($(FPU_USAGE),)
+		CPU_NAME_LD = Cortex-M4 
+	else
+		CPU_NAME_LD = Cortex-M4.fp.sp
+	endif
+	CDEFS := $(CDEFS) -DTOPPERS_CORTEX_M4
+	FPU_ARCH_MACRO = __TARGET_FPU_FPV4_SP
+	FPU_ARCH_OPT   = fpv4-sp-d16
+else ifeq ($(CORE_TYPE),CORTEX_M0PLUS)
+	ARM_ARCH = ARMV6M
+	CPU_NAME_LD = Cortex-M0plus
+	CDEFS := $(CDEFS) -DTOPPERS_CORTEX_M0PLUS
+else ifeq ($(CORE_TYPE),CORTEX_M0)
+	ARM_ARCH = ARMV6M
+	CPU_NAME_LD = Cortex-M0
+	CDEFS := $(CDEFS) -DTOPPERS_CORTEX_M0
+else ifeq ($(CORE_TYPE),CORTEX_M3)
+	ARM_ARCH = ARMV7M
+	CPU_NAME_LD = Cortex-M3
+	CDEFS := $(CDEFS) -DTOPPERS_CORTEX_M3
+endif
+
+#
+#  CPU指定
+#
+COPTS := $(COPTS) -mcpu=$(CPU_NAME)
+LDFLAGS := $(LDFLAGS) --cpu=$(CPU_NAME_LD)
+
+#
+#  アーキテクチャ毎に異なる設定
+#
+ifeq ($(ARM_ARCH),ARMV7M)
+	KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) core_support.o
+	CDEFS := $(CDEFS) -D__TARGET_ARCH_THUMB=4
+else ifeq ($(ARM_ARCH),ARMV6M)
+	KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) core_support_v6m.o
+	CDEFS := $(CDEFS) -D__TARGET_ARCH_THUMB=3
+endif
+
+#
+#  FPUの設定
+#
+ifeq ($(FPU_ABI),)
+	FPU_ABI = softfp
+endif 
+
+ifeq ($(FPU_USAGE),FPU_NO_PRESERV)
+	COPTS := $(COPTS) -mfloat-abi=$(FPU_ABI) -mfpu=$(FPU_ARCH_OPT)
+	CDEFS := $(CDEFS) -D$(FPU_ARCH_MACRO) -DTOPPERS_FPU_ENABLE
+else ifeq ($(FPU_USAGE),FPU_NO_LAZYSTACKING)
+	COPTS := $(COPTS) -mfloat-abi=$(FPU_ABI) -mfpu=$(FPU_ARCH_OPT)
+	CDEFS := $(CDEFS) -D$(FPU_ARCH_MACRO) -DTOPPERS_FPU_ENABLE -DTOPPERS_FPU_NO_LAZYSTACKING -DTOPPERS_FPU_CONTEXT
+else ifeq ($(FPU_USAGE),FPU_LAZYSTACKING)
+	COPTS := $(COPTS) -mfloat-abi=$(FPU_ABI) -mfpu=$(FPU_ARCH_OPT)
+	CDEFS := $(CDEFS) -D$(FPU_ARCH_MACRO) -DTOPPERS_FPU_ENABLE -DTOPPERS_FPU_LAZYSTACKING -DTOPPERS_FPU_CONTEXT
+endif
+
+#
+#  依存関係の定義
+#
+cfg1_out.c: $(COREDIR_GCC)/core_def.csv
+kernel_cfg.timestamp: $(COREDIR_GCC)/core.tf
+
+#
+#  コンフィギュレータ関係の変数の定義
+#
+CFG_TABS := $(CFG_TABS) --cfg1-def-table $(COREDIR_GCC)/core_def.csv

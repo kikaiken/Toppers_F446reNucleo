@@ -1,0 +1,63 @@
+#
+#		Makefile のチップ依存部（STM32F4XX_STM32CUBE_ARMCLANG用）
+#
+
+#
+#  ディレクトリの定義
+#
+CHIPDIR = $(SRCDIR)/arch/$(PRC)_$(TOOL)/$(CHIP)
+CHIPDIR_GCC = $(SRCDIR)/arch/$(PRC)_gcc/$(CHIP)
+
+#
+#  コアの種類
+#
+CORE_TYPE = CORTEX_M4
+
+#
+#  カーネルに関する定義
+#
+KERNEL_DIR := $(KERNEL_DIR) $(CHIPDIR) $(CHIPDIR_GCC) \
+              $(CHIPDIR_GCC)/STM32F4xx_HAL_Driver/Src
+KERNEL_ASMOBJS := $(KERNEL_ASMOBJS)
+KERNEL_COBJS := $(KERNEL_COBJS) core_timer.o
+
+#
+#  コンパイルオプション
+#
+COPTS := $(COPTS) -mlittle-endian
+LDFLAGS := $(LDFLAGS) --littleend
+INCLUDES := $(INCLUDES) -I$(CHIPDIR) -I$(CHIPDIR_GCC) \
+            -I$(CHIPDIR_GCC)/STM32F4xx_HAL_Driver/Inc \
+            -I$(CHIPDIR_GCC)/CMSIS/Device/ST/STM32F4xx/Include \
+            -I$(CHIPDIR_GCC)/CMSIS/Include
+
+#
+#  システムサービスに関する定義
+#
+SYSSVC_DIR := $(SYSSVC_DIR) $(CHIPDIR_GCC)
+SYSSVC_COBJS := $(SYSSVC_COBJS)
+
+#
+#  トレースログに関する設定
+#
+ifeq ($(ENABLE_TRACE),true)
+	COPTS := $(COPTS) -DTOPPERS_ENABLE_TRACE
+	KERNEL_DIR := $(KERNEL_DIR) $(SRCDIR)/arch/logtrace
+	KERNEL_COBJS := $(KERNEL_COBJS) trace_config.o trace_dump.o
+endif
+
+#
+#  依存関係の定義
+#
+kernel_cfg.timestamp: $(CHIPDIR_GCC)/chip.tf
+$(OBJFILE): $(CHIPDIR_GCC)/chip_check.tf
+
+# 
+#  オフセットファイル生成のための定義 
+# 
+OFFSET_TF := $(CHIPDIR_GCC)/chip_offset.tf
+
+#
+#  プロセッサ依存部のインクルード
+#
+include $(SRCDIR)/arch/$(PRC)_$(TOOL)/common/Makefile.core

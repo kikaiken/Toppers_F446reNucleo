@@ -1,0 +1,75 @@
+=====================================================================
+                      NUCLEO_F401RE依存部(ARMCLANG版)
+                                  Last Modified:2018 May 10 21:02:06
+=====================================================================
+
+(1) 対応しているターゲットシステムの種類・構成
+
+NUCLEO_F401RE(ARMCLANG)ターゲット依存部は，STM32F401RE(Cortex-M4F)を搭
+載したSTマイクロ社のNUCLEO_F401REボードをサポートする．プコンパイラと
+しては，ARMCLANGをサポートしている．
+
+多くのコードはGCC版のNUCLEO_F401REターゲット依存部と共有している．本マ
+ニュアルでGCC版と重複している部分は省略している．
+
+ビルド環境としては，Makeを用いたGNU環境とuVisionをサポートしている．
+
+(2) 使用する開発環境と動作検証した条件（バージョン，オプション等）
+
+動作確認した ARMCLANG は，以下のバージョンである．
+
+    
+    Product: DS-5 Professional 5.26.2
+    Component: ARM Compiler 6.9
+    Tool: armclang [5ced1d00]
+    
+    Product: MDK-ARM Lite 5.25
+    Component: ARM Compiler 6.9
+    Tool: armclang [5ced1d00]
+    
+動作確認した uVision は以下のバージョンである．
+
+    V5.24.1
+
+(4) メモリマップ
+
+プログラムはFLASHへデータはRAMへ配置する．配置を変更するには，
+stbee.scat を変更すること．
+
+(7) ディレクトリ構成・ファイル構成
+  ./nucleo_f401re_armclang
+    ./Makefile.target
+    ./stm32f401re.scat
+    ./target.tf
+    ./target_asm.inc
+    ./target_check.tf
+    ./target_user.txt
+      
+(8)ビルド方法
+
+(8-1)GNU環境
+
+一部ファイルはarmccで変更が必要なためコピーする必要がある．
+
+ $cp ./arch/armclang/Makefile.sample ./sample
+  
+ファイルのコピー後はGCC版と同様の手順でビルド可能である．なお，生成す
+るロードモジュールの拡張子は.axfである（asp.axf）．
+
+(8-2)uVision環境
+
+1.以下のファイルをuVisionで開く
+
+  ./target/nucleo_f401re_armclang/uvision/asp_proj.uvmpw
+
+2.ツールバーから "Batch Build" を選択する．
+
+3."Build"ボタンを押してビルドする．
+
+4.asp.axfが作成されるので実機で実行
+
+(9) バージョン履歴
+2018/04/19
+・新規開発
+
+以上．
