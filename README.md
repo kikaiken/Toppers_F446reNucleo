@@ -1,0 +1,7 @@
+# Toppers_F446reNucleo
+ToppersF401re向け簡易パッケージをF446reNucleoに移植してLチカした(TrueStudioのみ動作を確認)
+
+F401re向けパッケージのtarget\nucleo_f446re_gcc以下の部分の401reを446reに書き換えたもの。Makefile.targetのCDEFで型番はDSTM32F446xxに指定。
+asp_1.9.3_utf8\target\nucleo_f446re_gcc\truestudio\asp内の.cprojectをTrueStudioを開いてビルドし、デバッグの構成からasp_debugを選択しデバッグすると書き込める。
+プログラムを書きこんだ後シリアルで“/”キーを入力するとLEDが点灯/消灯する
+HALの機能を追加する際にはstm32f4xx_hal_conf.hで適切なdefineのコメントアウトを外し、Makefile.targetのKERNEL_COBJSで適切な.oファイルをリンクする。その機能を使用するファイルで"stm32f4xx_hal.h"をインクルードすること。
