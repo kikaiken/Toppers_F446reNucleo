@@ -81,6 +81,7 @@
  */
 #ifndef TOPPERS_MACRO_ONLY
 
+extern void encoder(intptr_t exinf);
 extern void	task(intptr_t exinf);
 extern void	main_task(intptr_t exinf);
 extern void	tex_routine(TEXPTN texptn, intptr_t exinf);

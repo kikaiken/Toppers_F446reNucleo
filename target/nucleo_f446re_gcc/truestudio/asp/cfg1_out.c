@@ -446,13 +446,16 @@ const unsigned_t TOPPERS_cfg_static_api_22 = 22;
 const unsigned_t TOPPERS_cfg_valueof_tskatr_22 = ( unsigned_t )( TA_NULL ); const signed_t TOPPERS_cfg_valueof_itskpri_22 = ( signed_t )( MID_PRIORITY ); const unsigned_t TOPPERS_cfg_valueof_stksz_22 = ( unsigned_t )( STACK_SIZE ); 
 #line 18 "sample1.cfg"
 const unsigned_t TOPPERS_cfg_static_api_23 = 23;
-#define MAIN_TASK	(<>)
+#define ENCODER	(<>)
 
 #line 18 "sample1.cfg"
-const unsigned_t TOPPERS_cfg_valueof_tskatr_23 = ( unsigned_t )( TA_ACT ); const signed_t TOPPERS_cfg_valueof_itskpri_23 = ( signed_t )( MAIN_PRIORITY ); const unsigned_t TOPPERS_cfg_valueof_stksz_23 = ( unsigned_t )( STACK_SIZE ); 
+const unsigned_t TOPPERS_cfg_valueof_tskatr_23 = ( unsigned_t )( TA_NULL ); const signed_t TOPPERS_cfg_valueof_itskpri_23 = ( signed_t )( HIGH_PRIORITY ); const unsigned_t TOPPERS_cfg_valueof_stksz_23 = ( unsigned_t )( STACK_SIZE ); 
 #line 19 "sample1.cfg"
 const unsigned_t TOPPERS_cfg_static_api_24 = 24;
-const unsigned_t TOPPERS_cfg_valueof_texatr_24 = ( unsigned_t )( TA_NULL ); 
+#define MAIN_TASK	(<>)
+
+#line 19 "sample1.cfg"
+const unsigned_t TOPPERS_cfg_valueof_tskatr_24 = ( unsigned_t )( TA_ACT ); const signed_t TOPPERS_cfg_valueof_itskpri_24 = ( signed_t )( MAIN_PRIORITY ); const unsigned_t TOPPERS_cfg_valueof_stksz_24 = ( unsigned_t )( STACK_SIZE ); 
 #line 20 "sample1.cfg"
 const unsigned_t TOPPERS_cfg_static_api_25 = 25;
 const unsigned_t TOPPERS_cfg_valueof_texatr_25 = ( unsigned_t )( TA_NULL ); 
@@ -461,20 +464,23 @@ const unsigned_t TOPPERS_cfg_static_api_26 = 26;
 const unsigned_t TOPPERS_cfg_valueof_texatr_26 = ( unsigned_t )( TA_NULL ); 
 #line 22 "sample1.cfg"
 const unsigned_t TOPPERS_cfg_static_api_27 = 27;
-#define CYCHDR1	(<>)
-
-#line 22 "sample1.cfg"
-const unsigned_t TOPPERS_cfg_valueof_cycatr_27 = ( unsigned_t )( TA_NULL ); const unsigned_t TOPPERS_cfg_valueof_cyctim_27 = ( unsigned_t )( 2000 ); const unsigned_t TOPPERS_cfg_valueof_cycphs_27 = ( unsigned_t )( 0 ); 
+const unsigned_t TOPPERS_cfg_valueof_texatr_27 = ( unsigned_t )( TA_NULL ); 
 #line 23 "sample1.cfg"
 const unsigned_t TOPPERS_cfg_static_api_28 = 28;
-#define ALMHDR1	(<>)
+#define CYCHDR1	(<>)
 
 #line 23 "sample1.cfg"
-const unsigned_t TOPPERS_cfg_valueof_almatr_28 = ( unsigned_t )( TA_NULL ); 
+const unsigned_t TOPPERS_cfg_valueof_cycatr_28 = ( unsigned_t )( TA_NULL ); const unsigned_t TOPPERS_cfg_valueof_cyctim_28 = ( unsigned_t )( 2000 ); const unsigned_t TOPPERS_cfg_valueof_cycphs_28 = ( unsigned_t )( 0 ); 
+#line 24 "sample1.cfg"
+const unsigned_t TOPPERS_cfg_static_api_29 = 29;
+#define ALMHDR1	(<>)
+
+#line 24 "sample1.cfg"
+const unsigned_t TOPPERS_cfg_valueof_almatr_29 = ( unsigned_t )( TA_NULL ); 
 #ifdef CPUEXC1
 
-#line 25 "sample1.cfg"
-const unsigned_t TOPPERS_cfg_static_api_29 = 29;
-const unsigned_t TOPPERS_cfg_valueof_excno_29 = ( unsigned_t )( CPUEXC1 ); const unsigned_t TOPPERS_cfg_valueof_excatr_29 = ( unsigned_t )( TA_NULL ); 
+#line 26 "sample1.cfg"
+const unsigned_t TOPPERS_cfg_static_api_30 = 30;
+const unsigned_t TOPPERS_cfg_valueof_excno_30 = ( unsigned_t )( CPUEXC1 ); const unsigned_t TOPPERS_cfg_valueof_excatr_30 = ( unsigned_t )( TA_NULL ); 
 #endif 
 

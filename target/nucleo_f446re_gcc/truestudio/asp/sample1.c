@@ -142,6 +142,14 @@ ulong_t	tex_loop;		/* 例外処理ルーチン内でのループ回数 */
 /*
  *  並行実行されるタスク
  */
+
+void encoder(intptr_t exinf){
+	uint32_t enc = TIM1->CNT;
+	SVC_PERROR(ena_tex());
+	syslog(LOG_INFO,"task[ENCODER]");
+	syslog(LOG_INFO, "encoder:%ld", enc);
+}
+
 void task(intptr_t exinf)
 {
 	volatile ulong_t	i;
@@ -370,15 +378,18 @@ void main_task(intptr_t exinf)
 	/*
  	 *  タスクの起動
 	 */
-	SVC_PERROR(act_tsk(TASK1));
-	SVC_PERROR(act_tsk(TASK2));
-	SVC_PERROR(act_tsk(TASK3));
+	//SVC_PERROR(act_tsk(TASK1));
+	//SVC_PERROR(act_tsk(TASK2));
+	//SVC_PERROR(act_tsk(TASK3));
+	SVC_PERROR(act_tsk(ENCODER));
+	SVC_PERROR(wup_tsk(ENCODER));
 
 	/*
  	 *  メインループ
 	 */
 	do {
 		SVC_PERROR(serial_rea_dat(TASK_PORTID, &c, 1));
+		encoder(1);
 		switch (c) {
 		case 'e':
 		case 's':
